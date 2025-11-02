@@ -1,38 +1,55 @@
-import bcrypt from 'bcryptjs';
+import { generateJWtToken } from '../lib/index.js';
 import User from '../models/user-model.js';
 
 const login = async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(401).json({ message: 'All fields are required' })
+    }
+
     try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email }).select('+password');
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
-        const isMatch = await user.matchPassword(password);
+
+        const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
-        const token = user.generateAuthToken();
-        res.status(200).json({ token });
+
+        const payload = { id: user._id, email: user.email };
+        const token = generateJWtToken(payload, res);
+
+        res.status(200).json({
+            success: true,
+            user: { id: user._id, email: user.email }
+        });
+
     } catch (error) {
-        throw error;
+        console.error(error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 
 const register = async (req, res) => {
+    const { email, password, fullName } = req.body;
+    if (!email || !password || !fullName) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
     try {
-        const { email, password, fullName } = req.body;
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ email, password: hashedPassword, fullName });
+        const user = new User({ email, password, fullName });
         await user.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        throw error;
+        console.error(error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 
