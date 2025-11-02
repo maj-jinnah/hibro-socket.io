@@ -1,3 +1,4 @@
+import cloudinary from '../lib/cloudinary.js';
 import { generateJWtToken } from '../lib/index.js';
 import User from '../models/user-model.js';
 
@@ -73,9 +74,31 @@ const logout = (req, res) => {
 //     res.status(200).json({ message: 'Token refreshed successfully' });
 // };
 
+const updateProfile = async (req, res) => {
+    try {
+        const { profilePicture } = req.body;
+        if (!profilePicture) {
+            return res.status(400).json({ message: 'Profile picture is required' });
+        }
+        const userId = req.user.id;
+
+        const result = await cloudinary.uploader.upload(profilePicture);
+        
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            profilePicture: result.secure_url
+        }, { new: true }).select('-password');
+
+        res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+    } catch (error) {
+        console.error("Update profile error -", error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
 export default {
     login,
     register,
     logout,
-    // refreshToken
+    // refreshToken,
+    updateProfile
 };
