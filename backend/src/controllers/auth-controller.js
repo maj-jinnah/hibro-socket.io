@@ -54,17 +54,28 @@ const register = async (req, res) => {
 };
 
 const logout = (req, res) => {
-    // Handle user logout
-    res.status(200).json({ message: 'User logged out successfully' });
-}
-
-const refreshToken = (req, res) => {
-    // Handle token refresh
-    res.status(200).json({ message: 'Token refreshed successfully' });
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 0
+        });
+        res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+        console.log("Logout error -", error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
 };
+
+// const refreshToken = (req, res) => {
+//     // Handle token refresh
+//     res.status(200).json({ message: 'Token refreshed successfully' });
+// };
+
 export default {
     login,
     register,
     logout,
-    refreshToken
+    // refreshToken
 };
