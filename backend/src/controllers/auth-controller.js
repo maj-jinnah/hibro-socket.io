@@ -83,7 +83,7 @@ const updateProfile = async (req, res) => {
         const userId = req.user.id;
 
         const result = await cloudinary.uploader.upload(profilePicture);
-        
+
         const updatedUser = await User.findByIdAndUpdate(userId, {
             profilePicture: result.secure_url
         }, { new: true }).select('-password');
@@ -95,10 +95,21 @@ const updateProfile = async (req, res) => {
     }
 }
 
+const checkAuth = async (req, res) => {
+    try {
+        const user = req.user;
+        res.status(200).json({ user });
+    } catch (error) {
+        console.error("Check auth error -", error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
 export default {
     login,
     register,
     logout,
     // refreshToken,
-    updateProfile
+    updateProfile,
+    checkAuth
 };
