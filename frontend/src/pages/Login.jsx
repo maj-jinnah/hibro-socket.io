@@ -28,7 +28,9 @@ const Login = () => {
                                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                                     <MessageSquare className="w-6 h-6 text-primary" />
                                 </div>
-                                <span className="text-3xl font-bold">HiBro</span>
+                                <span className="text-3xl font-bold">
+                                    HiBro
+                                </span>
                             </div>
                             <h1 className="text-2xl font-bold mt-2">
                                 Welcome Back
@@ -43,18 +45,18 @@ const Login = () => {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text font-medium">
+                                <span className="label-text font-medium mb-2">
                                     Email
                                 </span>
                             </label>
                             <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                {/* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Mail className="h-5 w-5" />
-                                </div>
+                                </div> */}
                                 <input
                                     type="email"
-                                    className={`input input-bordered w-full pl-10`}
-                                    placeholder="you@example.com"
+                                    className={`input input-bordered w-full pl-3`}
+                                    placeholder="Email"
                                     value={formData.email}
                                     onChange={(e) =>
                                         setFormData({
@@ -65,20 +67,21 @@ const Login = () => {
                                 />
                             </div>
                         </div>
+                        
 
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text font-medium">
+                                <span className="label-text font-medium mb-2">
                                     Password
                                 </span>
                             </label>
                             <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                {/* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Lock className="h-5 w-5 text-base-content/40" />
-                                </div>
+                                </div> */}
                                 <input
                                     type={showPassword ? "text" : "password"}
-                                    className={`input input-bordered w-full pl-10`}
+                                    className={`input input-bordered w-full pl-3`}
                                     placeholder="••••••••"
                                     value={formData.password}
                                     onChange={(e) =>

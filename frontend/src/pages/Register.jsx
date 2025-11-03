@@ -63,18 +63,18 @@ const Register = () => {
                         {/* FULL NAME */}
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text font-medium">
+                                <span className="label-text font-medium mb-2">
                                     Full Name
                                 </span>
                             </label>
                             <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                {/* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <User className="size-5 text-base-content/40" />
-                                </div>
+                                </div> */}
                                 <input
                                     type="text"
-                                    className={`input input-bordered w-full pl-10`}
-                                    placeholder="Mohammad Ali Jinnah"
+                                    className={`input input-bordered w-full pl-3`}
+                                    placeholder="Your full name"
                                     value={formData.fullName}
                                     onChange={(e) =>
                                         setFormData({
@@ -89,18 +89,18 @@ const Register = () => {
                         {/* EMAIL */}
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text font-medium">
+                                <span className="label-text font-medium mb-2">
                                     Email
                                 </span>
                             </label>
                             <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                {/* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Mail className="size-5 text-base-content/40" />
-                                </div>
+                                </div> */}
                                 <input
                                     type="email"
-                                    className={`input input-bordered w-full pl-10`}
-                                    placeholder="maj.jinnah1000@gmail.com"
+                                    className={`input input-bordered w-full pl-3`}
+                                    placeholder="Email"
                                     value={formData.email}
                                     onChange={(e) =>
                                         setFormData({
@@ -115,17 +115,17 @@ const Register = () => {
                         {/* PASSWORD */}
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text font-medium">
+                                <span className="label-text font-medium mb-2">
                                     Password
                                 </span>
                             </label>
                             <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                {/* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Lock className="size-5 text-base-content/40" />
-                                </div>
+                                </div> */}
                                 <input
                                     type={showPassword ? "text" : "password"}
-                                    className={`input input-bordered w-full pl-10`}
+                                    className={`input input-bordered w-full pl-3`}
                                     placeholder="••••••••"
                                     value={formData.password}
                                     onChange={(e) =>
