@@ -1,2 +1,5 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+    themes: cupcake, sunset, night, lemonade, nord, dim;
+}

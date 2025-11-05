@@ -5,7 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+     "start": "node src/index.js"
+  },
+  "engines": {
+    "node": ">=18.x",
+    "pnpm": ">=9.x"
   },
   "keywords": [],
   "author": "",
