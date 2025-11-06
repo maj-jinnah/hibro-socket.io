@@ -30,6 +30,7 @@ const getAllMessages = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 }
+
 const sendMessage = async (req, res) => {
     try {
         const {text, image} = req.body;
