@@ -4,10 +4,10 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import connectDb from './lib/db.js';
+import { app, httpServer } from './lib/socket.js';
 import routes from './routes/index.js';
 
 dotenv.config();
-const app = express();
 const PORT = process.env.PORT;
 
 app.use(cors({
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // localhost:5000/api/...
 app.use('/api', routes);
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
     connectDb();
     console.log(`Server is running on port ${PORT}`);
 });

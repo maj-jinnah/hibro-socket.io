@@ -1,6 +1,7 @@
-import User from '../models/user-model.js';
-import Message from '../models/message-model.js';
 import cloudinary from '../lib/cloudinary.js';
+import { getReceiverSocketId, io } from '../lib/socket.js';
+import Message from '../models/message-model.js';
+import User from '../models/user-model.js';
 
 const getAllUsers = async (req, res) => {
     try {
@@ -20,11 +21,11 @@ const getAllMessages = async (req, res) => {
 
         const messages = await Message.find({
             $or: [
-                { sender: loggedInUserId, receiver: receiverId },
-                { sender: receiverId, receiver: loggedInUserId }
+                { senderId: loggedInUserId, receiverId: receiverId },
+                { senderId: receiverId, receiverId: loggedInUserId }
             ]
         }).sort({ createdAt: 1 });
-        res.status(200).json({ messages });
+        res.status(200).json( messages );
     } catch (error) {
         console.log("Message controller getAllMessages --", error);
         res.status(500).json({ message: 'Server error', error: error.message });
@@ -33,7 +34,7 @@ const getAllMessages = async (req, res) => {
 
 const sendMessage = async (req, res) => {
     try {
-        const {text, image} = req.body;
+        const { text, image } = req.body;
         const { userId: receiverId } = req.params;
         const loggedInUserId = req.user._id;
 
@@ -44,16 +45,21 @@ const sendMessage = async (req, res) => {
         }
 
         const newMessage = new Message({
-            sender: loggedInUserId,
-            receiver: receiverId,
+            senderId: loggedInUserId,
+            receiverId: receiverId,
             text,
             image
         });
         await newMessage.save();
 
         // socket io logic
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {
+            // console.log('newMessage', newMessage)
+            io.to(receiverSocketId).emit('newMessage', newMessage);
+        }
 
-        res.status(201).json({ message: 'Message sent successfully' });
+        res.status(201).json(newMessage);
     } catch (error) {
         console.log("Message controller sendMessage --", error);
         res.status(500).json({ message: 'Server error', error: error.message });

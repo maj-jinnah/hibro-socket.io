@@ -1,22 +1,25 @@
 import { toast } from 'react-hot-toast';
+import { io } from "socket.io-client";
 import { create } from 'zustand';
 import axiosInstance from '../lib/axios.js';
 
+const backendUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL;
 
-export const useAuthStore = create((set) => ({
+export const useAuthStore = create((set, get) => ({
     authUser: null,
     isSigningIn: false,
     isLoggingIn: false,
     isUpdatingProfile: false,
     onlineUsers: [],
-
     isCheckingAuth: true,
+    socket: null,
 
     checkAuth: async () => {
         try {
             const response = await axiosInstance.get('/auth/check');
             const userData = response.data;
             set({ authUser: userData, isCheckingAuth: false });
+            get().connectSocket();
         } catch (error) {
             console.error("Check auth error -", error);
             set({ authUser: null, isCheckingAuth: false });
@@ -43,6 +46,7 @@ export const useAuthStore = create((set) => ({
             const userData = response.data;
             set({ authUser: userData, isLoggingIn: false });
             toast.success("Login successful");
+            get().connectSocket();
         } catch (error) {
             console.error("Login error -", error);
             toast.error(error.response?.data?.message || "Login failed");
@@ -55,6 +59,7 @@ export const useAuthStore = create((set) => ({
             await axiosInstance.post('/auth/logout');
             set({ authUser: null });
             toast.success("Logout successful");
+            get().disConnectSocket();
         } catch (error) {
             console.error("Logout error -", error);
             toast.error(error.response?.data?.message || "Logout failed");
@@ -75,7 +80,28 @@ export const useAuthStore = create((set) => ({
             set({ isUpdatingProfile: false });
         }
     },
+
+    connectSocket: () => {
+        const { authUser, socket } = get();
+        if (!authUser || socket?.connected) return;
+
+        console.log('authUser:-', authUser)
+
+        const socketIo = io(backendUrl, {
+            query: { userId: authUser.user?._id }
+        });
+        socketIo.connect();
+        set({ socket: socketIo });
+
+        socketIo.on("getOnlineUsers", (onlineUserIds) => {
+            set({ onlineUsers: onlineUserIds });
+        });
+    },
+
+    disConnectSocket: () => {
+        const socket = get().socket;
+        if (socket) {
+            socket.disconnect();
+        }
+    }
 }))
-
-
-// maj.jinnah1999@gmail.com
