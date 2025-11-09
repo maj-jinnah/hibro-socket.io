@@ -88,7 +88,7 @@ export const useAuthStore = create((set, get) => ({
         console.log('authUser:-', authUser)
 
         const socketIo = io(backendUrl, {
-            query: { userId: authUser.user?._id }
+            query: { userId: authUser?._id }
         });
         socketIo.connect();
         set({ socket: socketIo });

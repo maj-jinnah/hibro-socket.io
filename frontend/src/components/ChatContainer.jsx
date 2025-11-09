@@ -49,6 +49,8 @@ const ChatContainer = () => {
     }
 
     console.log("messages---", messages);
+    console.log('auth user:-', authUser)
+    console.log('selected user:-', selectedUser)
 
     return (
         <div className="flex-1 flex flex-col overflow-auto">
@@ -70,9 +72,9 @@ const ChatContainer = () => {
                                 <img
                                     src={
                                         message.senderId === authUser._id
-                                            ? authUser.profilePic ||
+                                            ? authUser.profilePicture ||
                                               "/avatar.png"
-                                            : selectedUser.profilePic ||
+                                            : selectedUser.profilePicture ||
                                               "/avatar.png"
                                     }
                                     alt="profile pic"

@@ -21,7 +21,8 @@ const Profile = () => {
         };
     };
 
-    console.log(authUser);
+    // console.log(authUser);
+    
     return (
         <div className="h-screen pt-20">
             <div className="max-w-2xl mx-auto p-4 py-8">
@@ -38,7 +39,7 @@ const Profile = () => {
                             <img
                                 src={
                                     selectedImg ||
-                                    authUser?.user?.profilePicture ||
+                                    authUser?.profilePicture ||
                                     "/avatar.png"
                                 }
                                 alt="Profile"
@@ -82,7 +83,7 @@ const Profile = () => {
                                 Full Name
                             </div>
                             <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-                                {authUser?.user?.fullName}
+                                {authUser?.fullName}
                             </p>
                         </div>
 
@@ -92,7 +93,7 @@ const Profile = () => {
                                 Email Address
                             </div>
                             <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-                                {authUser?.user?.email}
+                                {authUser?.email}
                             </p>
                         </div>
                     </div>
@@ -104,7 +105,7 @@ const Profile = () => {
                         <div className="space-y-3 text-sm">
                             <div className="flex items-center justify-between py-2 border-b border-zinc-700">
                                 <span>Member Since</span>
-                                <span>{authUser.user.createdAt?.split("T")[0]}</span>
+                                <span>{authUser.createdAt?.split("T")[0]}</span>
                             </div>
                             <div className="flex items-center justify-between py-2">
                                 <span>Account Status</span>
