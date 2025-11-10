@@ -3,8 +3,10 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore.js";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         fullName: "",
@@ -12,7 +14,7 @@ const Register = () => {
         password: "",
     });
 
-    const { signup, isSigningUp } = useAuthStore();
+    const { authUser, signup, isSigningUp } = useAuthStore();
 
     const validateForm = () => {
         if (!formData.fullName.trim())
@@ -27,14 +29,22 @@ const Register = () => {
         return true;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => { // Make it async
         e.preventDefault();
-        // toast.success("Form submitted successfully");
 
         const success = validateForm();
 
-        if (success === true) signup(formData);
+        if (success === true) {
+            const result = await signup(formData); // Wait for result
+            if (result.success) {
+                navigate("/login"); // Navigate programmatically
+            }
+        }
     };
+
+    if(authUser){
+        return <Navigate to="/" />;
+    }
 
     return (
         <div className="min-h-screen grid lg:grid-cols-1">

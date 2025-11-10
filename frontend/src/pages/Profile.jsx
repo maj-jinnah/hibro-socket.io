@@ -21,7 +21,7 @@ const Profile = () => {
         };
     };
 
-    // console.log(authUser);
+    // console.log("auth user--",authUser);
     
     return (
         <div className="h-screen pt-20">

@@ -26,16 +26,43 @@ export const useAuthStore = create((set, get) => ({
         }
     },
 
+    // signup: async (formData) => {
+    //     set({ isSigningUp: true });
+    //     try {
+    //         const response = await axiosInstance.post('/auth/register', formData);
+    //         const userData = response.data;
+    //         // set({ authUser: userData, isSigningUp: false });
+    //         set({isSigningUp: false });
+    //         toast.success("Signup successful");
+    //         // Navigate("/login");
+    //         // return <Navigate to="/login" />;
+
+    //     } catch (error) {
+    //         console.error("Signup error -", error);
+    //         toast.error(error.response?.data?.message || "Signup failed");
+    //         set({ isSigningUp: false });
+    //         // return <Navigate to="/login" />;
+    //     }
+    // },
+
     signup: async (formData) => {
         set({ isSigningUp: true });
         try {
             const response = await axiosInstance.post('/auth/register', formData);
-            const userData = response.data;
-            set({ authUser: userData, isSigningUp: false });
+            // const userData = response.data;
+
+            // DON'T set authUser after signup - let them login instead
+            set({ isSigningUp: false });
+            toast.success("Signup successful! Please login.");
+
+            // Return success indicator
+            return { success: true };
+
         } catch (error) {
             console.error("Signup error -", error);
             toast.error(error.response?.data?.message || "Signup failed");
             set({ isSigningUp: false });
+            return { success: false };
         }
     },
 
@@ -44,9 +71,11 @@ export const useAuthStore = create((set, get) => ({
         try {
             const response = await axiosInstance.post('/auth/login', formData);
             const userData = response.data;
+            console.log("login response user data:--", userData)
             set({ authUser: userData, isLoggingIn: false });
             toast.success("Login successful");
-            get().connectSocket();
+            // get().connectSocket();
+            get().checkAuth();
         } catch (error) {
             console.error("Login error -", error);
             toast.error(error.response?.data?.message || "Login failed");
@@ -88,7 +117,7 @@ export const useAuthStore = create((set, get) => ({
         const socketIo = io(backendUrl, {
             query: { userId: authUser?._id }
         });
-        
+
         socketIo.connect();
         set({ socket: socketIo });
 

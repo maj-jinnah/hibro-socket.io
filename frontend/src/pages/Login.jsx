@@ -2,6 +2,7 @@ import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -9,12 +10,15 @@ const Login = () => {
         email: "",
         password: "",
     });
-    const { login, isLoggingIn } = useAuthStore();
+    const {  authUser ,login, isLoggingIn } = useAuthStore();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         login(formData);
     };
+    if(authUser){
+        return <Navigate to="/" />;
+    }
 
     return (
         <div className="h-screen grid lg:grid-cols-1">

@@ -48,9 +48,9 @@ const ChatContainer = () => {
         );
     }
 
-    console.log("messages---", messages);
-    console.log('auth user:-', authUser)
-    console.log('selected user:-', selectedUser)
+    // console.log("messages---", messages);
+    // console.log('auth user:-', authUser)
+    // console.log('selected user:-', selectedUser)
 
     return (
         <div className="flex-1 flex flex-col overflow-auto">
