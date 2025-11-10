@@ -85,11 +85,10 @@ export const useAuthStore = create((set, get) => ({
         const { authUser, socket } = get();
         if (!authUser || socket?.connected) return;
 
-        console.log('authUser:-', authUser)
-
         const socketIo = io(backendUrl, {
             query: { userId: authUser?._id }
         });
+        
         socketIo.connect();
         set({ socket: socketIo });
 

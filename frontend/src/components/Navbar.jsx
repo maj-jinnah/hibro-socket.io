@@ -47,6 +47,13 @@ const Navbar = () => {
                                 className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
                             >
                                 <li>
+                                    <button
+                                        onClick={() => setTheme("lemonade")}
+                                    >
+                                        Lemonade
+                                    </button>
+                                </li>
+                                <li>
                                     <button onClick={() => setTheme("sunset")}>
                                         Sunset
                                     </button>
@@ -57,20 +64,8 @@ const Navbar = () => {
                                     </button>
                                 </li> */}
                                 <li>
-                                    <button
-                                        onClick={() => setTheme("lemonade")}
-                                    >
-                                        Lemonade
-                                    </button>
-                                </li>
-                                <li>
                                     <button onClick={() => setTheme("cupcake")}>
                                         Cupcake
-                                    </button>
-                                </li>
-                                <li>
-                                    <button onClick={() => setTheme("nord")}>
-                                        Nord
                                     </button>
                                 </li>
                                 {/* <li>
