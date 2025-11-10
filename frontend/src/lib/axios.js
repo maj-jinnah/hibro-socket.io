@@ -1,8 +1,9 @@
 import axios from 'axios';
 
+const backendUrl = import.meta.env.VITE_BASE_URL;
+
 const axiosInstance = axios.create({
-    //   baseURL: process.env.BASE_URL,
-    baseURL: 'http://localhost:5000/api/v1',
+    baseURL: backendUrl,
     timeout: 1000,
     headers: { 'X-Custom-Header': 'foobar' },
     withCredentials: true,
